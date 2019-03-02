@@ -29,7 +29,7 @@ As discussed in class a language implementation has two basic steps. First, a *p
 
 In this project, you are implementing an interpreter for the second step. The first step, the parser, has been provided for now but, you will be asked to implement it in a later project. You are writing key parts of an interpreter that behaves like the Ruby command to take a SmallC program file name, run the code, and produce the output. <!--Line 30 - EDIT Added the last sentence to make clear the context of their work.  --> 
 
-More specifically for these key parts you will implement functions `eval_expr` and `eval_stmt` in the file `eval.ml`. These functions, respectively, evaluate *expressions*, which are ASTs of type `expr` and execute *statements*, which are ASTs of type `stmt`. Expression and statement AST types `expr` and `stmt` are defined as variant types in the file `smallCTypes.ml`. This file should be a constant reference while you are working on the project. 
+More specifically for these key parts you will implement functions `eval_expr` and `eval_stmt` in the file `eval.ml`. These functions, respectively, evaluate *expressions*, which are ASTs of type `expr` and execute *statements*, which are ASTs of type `stmt`. Expression and statement AST types `expr` and `stmt` are defined as variant types in the file `smallCTypes.ml`. This file should be a constant reference while you are working on the project. Functions that carry out language interpretation are frequently called `eval`. 
 
 To assist you in your work, we are providing code that will do parsing for you. This code will take in a text file and produce an AST of type `stmt`. For our example above, the parser we provide will produce a the following value of type `stmt`:
 ```
@@ -44,7 +44,7 @@ Seq(Assign("x",
     Int(4))),
 Seq(Print(Greater(ID("x"), Int(100))), NoOp)))
 ```
-This `stmt` value will then be passed to the `eval_stmt` function you implement, so it can be interpreted. Since we're doing the parsing, you are not responsible for poorly formed input - if there's a parse error, your code should not be called. <!--Line 47 - FIXME added that last sentence to better explain I/O behavior. Assuming it's true ... -->
+This `stmt` value will then be passed to the `eval_stmt` function you implement to be interpreted. Since we're doing the parsing, you are not responsible for poorly formed input - if there's a parse error, your code should not be called. <!--Line 47 - FIXME added that last sentence to better explain I/O behavior. Assuming it's true ... -->
 
 <!-- EDIT. Added the below to better explain the whole thing. -->
 The raw input SmallC files will have a single main() function, so the example above would appear as below. But, you only have to interpret the sequence of statements in the body of the program, not the function header. The parser we provide will strip the header and supply you with the AST that represents the body as one compound statement.
@@ -64,7 +64,7 @@ To review, you are to write and test the implementations for two Ocaml functions
  `eval_expr : environment -> expr -> value`
  `eval_stmt : environment -> stmt -> environment`
  
-The rest of this readme will explain these functions in detail. We recommend you read carefully and before coding, write out for yourself all the cases for these functions.  
+The rest of this readme will explain these functions in detail. We suggest you look at the SmallC examples in **test/public_input** to understand SmallC, read in the carefully and before coding, write out for yourself all the cases for these functions.  
 
 <!-- End added section -->
 
@@ -95,15 +95,15 @@ Compilation, Tests, and Running
 
 Public and student tests can be run using the same `dune` command that you used in the previous projects but, this time you need to set the environment variable `OCAMLPATH` before running the command. The full command is now `OCAMLPATH=dep dune runtest -f`. Setting `OCAMLPATH` tells `dune` where it can find the lexer and parser that we have provided. You will need to provide this environment variable for every `dune` command so you may want to add it to your environment once by running `OCAMLPATH=dep` as separate command before using `dune`. We have also provided a shell script `test.sh` that runs the command given above.
 
-You can run the SmallC interpreter directly on a SmallC program by running `OCAMLPATH=dep dune exec bin/interface.bc -- <filename>`. This driver, provided by us, reads in a program from a file and evaluates the code, outputing the results of any print statements present in the source file. Think of this command a lot like the `ruby` command, but instead of running the ruby interpreter, it runs the SmallC interpreter that you wrote yourself! This depends on the lexer and parser that we wrote for you.
+As an alternative to running tests, you can run the SmallC interpreter directly on a SmallC program by running `OCAMLPATH=dep dune exec bin/interface.bc -- <filename>`. This driver, provided by us, reads in a program from a file and evaluates the code, outputing the results of any print statements present in the source file. As we mentioned before, this command is a lot like the `ruby` command, but instead of running the ruby interpreter, it runs the SmallC interpreter that you wrote yourself! This depends on the lexer and parser that we wrote for you.
 
 If you would like more detailed information about what your code produced, running `OCAMLPATH=dep dune exec bin/interface.bc -- <filename> -R` provides a report on the resultant variable bindings as reported by your evaluator. If you would like to see data structure that is being generated by the parser and being fed into your interpreter, run `OCAMLPATH=dep exec bin/interface.bc <filename> -U` and our `Utils` module will translate the data structure into a string and print it out for you - this part does not require any of your code, so feel free to try it on the public tests before you even start! Use the `interface` executable to your advantage when testing; that's why we're providing it! Note that you don't need to touch `interface.ml` yourself, as it only functions as an entry point for the interpreter and is independent of your implementation.
 
-As with running tests, we have provided a shell script `interface.sh` that executes the command given above. <!-- FIXME Which version? With or without the -R option? Not clear that "the command" refers to two paragraphs above. -->
+As with running tests, we have provided a shell script `interface.sh` that executes the command given above. <!-- EDIT Original did say which version, With or without the -R option. Was not clear that "the command" refers to two paragraphs above. -->
 
 The Evaluator
 -------------
-*The evaluator must be implemented in `eval.ml` in accordance with the signatures for `eval_expr` and `eval_stmt` found in `eval.mli`. `eval.ml` is the only file you will write code in. The functions should be left in the order they are provided, as your implementation of `eval_stmt` will rely on `eval_expr`.*
+*Your evaluator must be implemented in `eval.ml` in accordance with the signatures for `eval_expr` and `eval_stmt` found in `eval.mli`. `eval.ml` is the only file you will write code in. The functions should be left in the order they are provided, as your implementation of `eval_stmt` will rely on `eval_expr`.*
 
 The heart of SmallC is your evaluator. We have already implemented `Lexer` and `Parser` modules that deal with constructing tokens and creating the AST out of a program. Where your code picks up is with a representation of SmallC programs as OCaml datatypes, which you are then responsible for evaluating according the rules below. A program is made up of a series of statements and expressions:  <!-- FIXME Have we ever defined Lexer and tokens? We haven'
 
