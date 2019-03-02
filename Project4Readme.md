@@ -25,9 +25,9 @@ printf(x > 100);
 ```
 When executed, it will produce the result `true`. 
 
-As discussed in class, a language implementation has two basic steps. First, a *parser* takes text files and converts them into a data structure called an *abstract syntax tree* (AST). Then, the AST is either directly interpreted or compiled so it can be executed. <!--Line 28 - EDIT changed "parts" to "steps" since the second wasn't a part (noun), but an action.  --> 
+As discussed in class a language implementation has two basic steps. First, a *parser* takes text files and converts them into a data structure called an *abstract syntax tree* (AST). Then, the AST is either directly interpreted or compiled so it can be executed. <!--Line 28 - EDIT changed "parts" to "steps" since the second wasn't a part (noun), but an action.  --> 
 
-In this project, you are implementing an interpreter for the second step. The first step, the parser, has been provided for now but, you will be asked to implement it in a later project. In sum, you are writing key parts of an interpreter that behaves like the Ruby command to take a SmallC program file name, run the code, and produce the output. <!--Line 30 - EDIT Added the last sentence to make clear the context of their work.  --> 
+In this project, you are implementing an interpreter for the second step. The first step, the parser, has been provided for now but, you will be asked to implement it in a later project. You are writing key parts of an interpreter that behaves like the Ruby command to take a SmallC program file name, run the code, and produce the output. <!--Line 30 - EDIT Added the last sentence to make clear the context of their work.  --> 
 
 More specifically for these key parts you will implement functions `eval_expr` and `eval_stmt` in the file `eval.ml`. These functions, respectively, evaluate *expressions*, which are ASTs of type `expr` and execute *statements*, which are ASTs of type `stmt`. Expression and statement AST types `expr` and `stmt` are defined as variant types in the file `smallCTypes.ml`. This file should be a constant reference while you are working on the project. 
 
@@ -57,7 +57,7 @@ printf(x > 100);
 ```
 A regular interpreter, like the Ruby example above, would take this program and print `true`. But, for testing purposes in this assignment, you will not directly print the output. You will print through a special set of routines explained later that allow us to capture and test your output. Read the **Print** section carefully. And, for testing purposes we'll look at the internal state you maintain while your code interprets and executes SmallC. You'll keep and update an environment as a list of (variable,value) pairs. In the example above you'd start with the empty environment `[]`, update to `[(x,0)]` when x is declared, and end with the environment`[(x,490)]` after the assignment. 
 
-While we write the type `stmt` in the singular, so it looks like it means one statement, `stmt` is a recursive type `stmt => stmt; stmt' so think a sequence of statements as one compound statement. The `eval_stmt` function properly takes one or a sequence of statements and evaluates each atomic statement in turn.
+While the type `stmt` is singular, so it looks like it means one statement, `stmt` is a recursive type with `stmt => stmt; stmt`. Think of `stmt` as one statement, or a sequence of statements as one compound statement. The `eval_stmt` function properly takes one or a sequence of statements and evaluates each atomic statement in turn.
 
 To review, you are to write and test the implementations for two Ocaml functions found in the file **src/eval.ml**:
 
@@ -67,8 +67,6 @@ To review, you are to write and test the implementations for two Ocaml functions
 The rest of this readme will explain these functions in detail. We recommend you read carefully and before coding, write out for yourself all the cases for these functions.  
 
 <!-- End added section -->
-
-/*
 
 Project Files
 -------------
