@@ -64,6 +64,7 @@ While type name `stmt` is singular, and looks like one statement, `stmt` is a re
 To review, you are to write and test the implementations for two Ocaml functions found in the file **src/eval.ml**:
 
  `eval_expr : environment -> expr -> value`
+ 
  `eval_stmt : environment -> stmt -> environment`
  
 The rest of this readme will explain these functions in detail. We suggest before coding you look at the SmallC examples in **test/public_input** to understand SmallC, read carefully the specifications for `eval_expr` and `eval_stmt` below, study the unit cases, and write out for yourself all the cases for these functions.  
