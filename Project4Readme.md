@@ -29,7 +29,7 @@ As discussed in class a language implementation has two basic steps. First, a *p
 
 In this project, you are implementing an interpreter for the second step. The first step, the parser, has been provided for now but, you will be asked to implement it in a later project. You are writing key parts of an interpreter that behaves like the Ruby command to take a SmallC program file name, run the code, and produce the output. <!--Line 30 - EDIT Added the last sentence to make clear the context of their work.  --> 
 
-More specifically for these key parts you will implement functions `eval_expr` and `eval_stmt` in the file `eval.ml`. These functions, respectively, evaluate *expressions*, which are ASTs of type `expr` and execute *statements*, which are ASTs of type `stmt`. Expression and statement AST types `expr` and `stmt` are defined as variant types in the file `smallCTypes.ml`. This file should be a constant reference while you are working on the project. Functions that carry out language interpretation are frequently called `eval`. 
+More specifically for these key parts you will implement functions `eval_expr` and `eval_stmt` in the file `eval.ml`. These functions, respectively, evaluate *expressions*, which are ASTs of type `expr` and execute *statements*, which are ASTs of type `stmt`. Expression and statement AST types `expr` and `stmt` are defined as variant types in the file `smallCTypes.ml`. This file should be a constant reference while you are working on the project. Functions that carry out language interpretation are frequently called `eval`, and later we'll call your code **Evaluator** instead of interpreter. 
 
 To assist you in your work, we are providing code that will do parsing for you. This code will take in a text file and produce an AST of type `stmt`. For our example above, the parser we provide will produce a the following value of type `stmt`:
 ```
@@ -57,14 +57,16 @@ printf(x > 100);
 ```
 A regular interpreter, like the Ruby example above, would take this program and print `true`. But, for testing purposes in this assignment, you will not directly print the output. You will print through a special set of routines explained later that allow us to capture and test your output. Read the **Print** section carefully. And, for testing purposes we'll look at the internal state you maintain while your code interprets and executes SmallC. You'll keep and update an environment as a list of (variable,value) pairs. In the example above you'd start with the empty environment `[]`, update to `[(x,0)]` when x is declared, and end with the environment`[(x,490)]` after the assignment. 
 
-While the type `stmt` is singular, so it looks like it means one statement, `stmt` is a recursive type with `stmt => stmt; stmt`. Think of `stmt` as one statement, or a sequence of statements as one compound statement. The `eval_stmt` function properly takes one or a sequence of statements and evaluates each atomic statement in turn.
+If the SmallC program being interpreted is valid, we will test if you produce the right sequence of print statements and final environment. If the program is invalid, with a type error or numeric error, we will test if you raise the right exception at the right time. 
+
+While type name `stmt` is singular, and looks like one statement, `stmt` is a recursive type with `stmt => stmt; stmt`. Think of `stmt` as one atomic statement, or a sequence of statements as one compound statement. The `eval_stmt` function properly takes one or a sequence of statements and evaluates each in turn.
 
 To review, you are to write and test the implementations for two Ocaml functions found in the file **src/eval.ml**:
 
  `eval_expr : environment -> expr -> value`
  `eval_stmt : environment -> stmt -> environment`
  
-The rest of this readme will explain these functions in detail. We suggest you look at the SmallC examples in **test/public_input** to understand SmallC, read in the carefully and before coding, write out for yourself all the cases for these functions.  
+The rest of this readme will explain these functions in detail. We suggest before coding you look at the SmallC examples in **test/public_input** to understand SmallC, read carefully the specifications for `eval_expr` and `eval_stmt` below, study the unit cases, and write out for yourself all the cases for these functions.  
 
 <!-- End added section -->
 
