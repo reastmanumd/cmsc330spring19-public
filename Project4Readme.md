@@ -47,7 +47,7 @@ Seq(Print(Greater(ID("x"), Int(100))), NoOp)))
 This `stmt` value will then be passed to the `eval_stmt` function you implement to be interpreted. Since we're doing the parsing, you are not responsible for poorly formed input - if there's a parse error, your code should not be called. <!--Line 47 - FIXME added that last sentence to better explain I/O behavior. Assuming it's true ... -->
 
 <!-- EDIT. Added the below to better explain the whole thing. -->
-The raw input SmallC files will have a single main() function, so the example above would appear as below. But, you only have to interpret the sequence of statements in the body of the program, not the function header. The parser we provide will strip the header and supply you with the AST that represents the body as one compound statement.
+The raw input SmallC files will have a single main() function, so the example above would appear as below. But, you only have to interpret the sequence of statements in the body of the program, not the function header `int main()`. The parser we provide will strip the header and supply you with the AST that represents the body as one compound statement.
 ```
 int main() {
 int x;
@@ -55,7 +55,7 @@ x = 2 * 3 ^ 5 + 4;
 printf(x > 100);
 }
 ```
-A regular interpreter, like the Ruby example above, would take this program and print `true`. But, for testing purposes in this assignment, you will not directly print the output. You will print through a special set of routines explained later that allow us to capture and test your output. Read the **Print** section carefully. And, for testing purposes we'll look at the internal state you maintain while your code interprets and executes SmallC. You'll keep and update an environment as a list of (variable,value) pairs. In the example above you'd start with the empty environment `[]`, update to `[(x,0)]` when x is declared, and end with the environment`[(x,490)]` after the assignment. 
+A regular interpreter, like the Ruby example above, would take this program and print `true`. But, for testing purposes in this assignment, you will not directly print the output. You will print through a special set of routines explained later that allow us to capture and test your output. Read the **Print** section carefully. And, for testing purposes we'll look at the internal state you maintain while your code interprets and executes SmallC. You'll keep and update an environment as a list of (variable,value) pairs. In the example above you'd start with the empty environment `[]`, update to `[(x,0)]` when x is declared, and end with the environment`[(x,490)]` after the assignment. (In the actual code you'll use Int(0) to represent 0.)
 
 If the SmallC program being interpreted is valid, we will test if you produce the right sequence of print statements and final environment. If the program is invalid, with a type error or numeric error, we will test if you raise the right exception at the right time. 
 
@@ -106,9 +106,9 @@ As with running tests, we have provided a shell script `interface.sh` that execu
 
 The Evaluator
 -------------
-*Your evaluator must be implemented in `eval.ml` in accordance with the signatures for `eval_expr` and `eval_stmt` found in `eval.mli`. `eval.ml` is the only file you will write code in. The functions should be left in the order they are provided, as your implementation of `eval_stmt` will rely on `eval_expr`.*
+*Your evaluator must be implemented in `eval.ml` in accordance with the signatures for `eval_expr` and `eval_stmt` found in `eval.mli`. `eval.ml` is the only file you will write code in. The functions should be left in the order they are provided, as your implementation of `eval_stmt` will rely on `eval_expr`.* <!-- FIXME Why switch to Evaluator rather than continue with the Interpreter? -->
 
-The heart of SmallC is your evaluator. We have already implemented `Lexer` and `Parser` modules that deal with constructing tokens and creating the AST out of a program. Where your code picks up is with a representation of SmallC programs as OCaml datatypes, which you are then responsible for evaluating according the rules below. A program is made up of a series of statements and expressions:  <!-- FIXME Have we ever defined Lexer and tokens? We haven'
+The heart of SmallC is your evaluator. We have already implemented `Lexer` and `Parser` modules that deal with constructing tokens and creating the AST out of a program. Where your code picks up is with a representation of SmallC programs as OCaml datatypes, which you are then responsible for evaluating according the rules below. A program is made up of a series of statements and expressions:  <!-- FIXME Have we ever defined Lexer and token in class or project? -->
 
 - Statements represent the structure of a program - declarations, assignments, control flow, and prints in the case of SmallC. - Expressions represent operations on data - variable lookups, mathematical and boolean operations, and comparison. Expressions can't affect the environment, and as a result only return a `value` containing the value of the expression.
 
