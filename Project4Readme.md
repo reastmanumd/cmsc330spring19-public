@@ -1,4 +1,4 @@
-# Project 3: SmallC Interpreter
+# Project 3: SmallC Interpreter TEST
 
 CMSC 330, Spring 2019
 
