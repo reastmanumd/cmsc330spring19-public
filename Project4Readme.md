@@ -67,7 +67,7 @@ To review, you are to write and test the implementations for two Ocaml functions
  
  `eval_stmt : environment -> stmt -> environment`
  
-The rest of this readme will explain these functions in detail. We suggest before coding you look at the SmallC examples in **test/public_input** to understand SmallC, read carefully the specifications for `eval_expr` and `eval_stmt` below, study the unit tests, and write out for yourself all the cases for these functions.  
+The rest of this readme will explain these functions in detail. We suggest before coding you look at the SmallC examples in **test/public_input** and read **semantics.pdf** to understand SmallC, read carefully the specifications for `eval_expr` and `eval_stmt` below, study the unit tests, and write out for yourself all the cases for these functions.  Work out examples by hand if that helps.
 
 <!-- End added section -->
 
